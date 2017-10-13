@@ -59,7 +59,8 @@ public class CreateEmployeeViewController implements Initializable {
             HourlyEmployee newEmp = new HourlyEmployee(firstNameTextField.getText(), 
                                                         lastNameTextField.getText(), 
                                                         sinTextField.getText(), 
-                                                        dob.getValue());
+                                                        dob.getValue(),
+                                                        employeeImage.getImage());
             employees.add(newEmp);
             changeScene(event, "AllEmployeeView.fxml");
         }
@@ -148,6 +149,21 @@ public class CreateEmployeeViewController implements Initializable {
         
         //open the file dialog window
         imageFile = fileChooser.showOpenDialog(stage);
+        
+        //ensure the user selected a file
+        if (imageFile.isFile())
+        {
+            try
+            {
+                BufferedImage bufferedImage = ImageIO.read(imageFile);
+                Image image = SwingFXUtils.toFXImage(bufferedImage,null);
+                employeeImage.setImage(image);
+            }
+            catch (IOException e)
+            {
+                System.err.println(e.getMessage());
+            }
+        }
     }
     
 }

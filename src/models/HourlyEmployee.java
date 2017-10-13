@@ -1,6 +1,7 @@
 package models;
 
 import java.time.LocalDate;
+import javafx.scene.image.Image;
 
 /**
  *
@@ -16,9 +17,14 @@ public class HourlyEmployee extends Employee{
         payRate = MINIMUM_WAGE;
         hoursWorked = 0;
     }
+    public HourlyEmployee(String firstName, String lastName, String socialInsuranceNum, LocalDate dateOfBirth, Image image) {
+        super(firstName, lastName, socialInsuranceNum, dateOfBirth, image);
+        payRate = MINIMUM_WAGE;
+        hoursWorked = 0;
+    }
 
-    public HourlyEmployee(double payRate, String firstName, String lastName, String socialInsuranceNum, LocalDate dateOfBirth) {
-        super(firstName, lastName, socialInsuranceNum, dateOfBirth);
+    public HourlyEmployee(double payRate, String firstName, String lastName, String socialInsuranceNum, LocalDate dateOfBirth, Image image) {
+        super(firstName, lastName, socialInsuranceNum, dateOfBirth, image);
         setPayRate(payRate);
         hoursWorked=0;
     }

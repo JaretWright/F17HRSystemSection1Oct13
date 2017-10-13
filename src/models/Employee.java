@@ -28,6 +28,10 @@ public abstract class Employee {
         this.image = image;
     }
 
+    public Image getImage() {
+        return image;
+    }
+
     
     
     public Employee(String firstName, String lastName, String socialInsuranceNum, LocalDate dateOfBirth) {

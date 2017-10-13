@@ -99,4 +99,35 @@ public class AllEmployeeViewController implements Initializable {
         //return the list
         return employees;
     }
+    
+    /**
+     * This method will use the selected Employee from the table
+     * and launch a new view so the user can edit the information
+     */
+    public void editEmployeeButtonPushed(ActionEvent event) throws IOException
+    {
+        //load a new scene
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("EditEmployeeView.fxml"));
+        Parent parent = loader.load();
+        Scene newScene = new Scene(parent);
+        
+        //access the controller of the new Scene and send over
+        //the current list of employees
+        EditEmployeeViewController controller = loader.getController();
+        
+        //gets the employee selected in the table
+        Employee employee = employeeTable.getSelectionModel().getSelectedItem();
+        
+        controller.loadEmployee(employee);
+        
+        //Get the current "stage" (aka window) 
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        //change the scene to the new scene
+        stage.setTitle("Edit Employee");
+        stage.setScene(newScene);
+        stage.show();
+    }
+            
 }
