@@ -1,9 +1,12 @@
 package views;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +17,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.imageio.ImageIO;
 import models.Employee;
 import models.HourlyEmployee;
 
@@ -32,6 +39,12 @@ public class CreateEmployeeViewController implements Initializable {
     @FXML private TextField sinTextField;
     @FXML private DatePicker dob;
     @FXML private Label errorMsg;
+    
+    @FXML private ImageView employeeImage;
+    
+    //Used for the file chooser
+    private FileChooser fileChooser;
+    private File imageFile;
     
     
     public void initialData(ObservableList<Employee> listOfEmp)
@@ -90,6 +103,51 @@ public class CreateEmployeeViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         errorMsg.setText("");
-    }    
+        
+        try
+        {
+            BufferedImage bufferedImage = ImageIO.read(new File("./src/images/defaultPerson.png"));
+            Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+            employeeImage.setImage(image);
+        }
+        catch (IOException e)
+        {
+            System.err.println(e.getMessage());
+        }
+    } 
+    
+    
+    /**
+     * This method will launch a FileChooser and load the image if accessible
+     */
+    public void chooseImageButtonPushed(ActionEvent event)
+    {
+        //get the stage to open a new window
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Image");
+        
+        //filter for only .jpg and .png files
+        FileChooser.ExtensionFilter jpgFilter 
+                = new FileChooser.ExtensionFilter("Image File (*.jpg)", "*.jpg");
+        FileChooser.ExtensionFilter pngFilter 
+                = new FileChooser.ExtensionFilter("Image File (*.png)", "*.png");
+        
+        fileChooser.getExtensionFilters().addAll(jpgFilter, pngFilter);
+        
+        
+        //Set to the user's picture directory or C drive if not available
+        String userDirectoryString = System.getProperty("user.home")+"\\Pictures";
+        File userDirectory = new File(userDirectoryString);
+        
+        if (!userDirectory.canRead())
+            userDirectory = new File("c:/");
+        
+        fileChooser.setInitialDirectory(userDirectory);
+        
+        //open the file dialog window
+        imageFile = fileChooser.showOpenDialog(stage);
+    }
     
 }

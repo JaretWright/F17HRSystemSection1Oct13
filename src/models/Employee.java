@@ -1,8 +1,13 @@
 package models;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import javax.imageio.ImageIO;
 
 
 
@@ -18,6 +23,13 @@ public abstract class Employee {
     private boolean administrator;
     private Image image;
 
+    public Employee(String firstName, String lastName, String socialInsuranceNum, LocalDate dateOfBirth, Image image) {
+        this(firstName, lastName, socialInsuranceNum, dateOfBirth);
+        this.image = image;
+    }
+
+    
+    
     public Employee(String firstName, String lastName, String socialInsuranceNum, LocalDate dateOfBirth) {
         setFirstName(firstName);
         setLastName(lastName);
@@ -26,6 +38,16 @@ public abstract class Employee {
         startDate = LocalDate.now();
         employeeNum = nextEmployeeNum;
         nextEmployeeNum++;
+        
+        try
+        {
+            BufferedImage bufferedImage = ImageIO.read(new File("./src/images/defaultPerson.png"));
+            image = SwingFXUtils.toFXImage(bufferedImage, null);
+        }
+        catch (IOException e)
+        {
+            System.err.println(e.getMessage());
+        }
     }
 
     public int getEmployeeNum() {
